@@ -37,7 +37,7 @@ To address these issues, **v1.0** of this pipeline introduced an automated appro
 Building on this foundation, **v2.0** incorporates **electrode manufacturing specifications** to further improve robustness. By exploiting the known geometry of linear electrode leads, the algorithm can fit multiple contacts simultaneously, mitigating the impact of noisy voxels and imaging artifacts. This allows faster, more accurate, and reproducible electrode localization for both clinical and research use cases.
 
 ## Methods
-
+### step 1: metal identification
 Our automated electrode localization approach begins by analyzing the CT intensity distribution.  
 We identify peaks corresponding to metal contacts, which allows us to select candidate voxels associated with the electrode lead.
 
@@ -46,6 +46,26 @@ We identify peaks corresponding to metal contacts, which allows us to select can
 </p>
 
 *Figure: Example CT intensity distribution. We find peaks with prominance higher than the noise. The right peak correspond to metal voxels*  
+
+### step 2: lead identification
+We visualize the **metal voxel isosurface** to sanity-check the threshold and the spatial distribution of metal (contacts + lead body). We also overlay the **planned trajectory** (exported from ROSA) and restrict analysis to voxels that lie within a **cylindrical neighborhood** of this line segment. This (i) suppresses unrelated metal (e.g., screws/plates) and (ii) disambiguates adjacent leads.
+
+**Note on ROSA coordinates:** Ensure the ROSA trajectory is in **the same RAS frame** as the CT used for localization. Co registration is needed
+
+<p align="center">
+  <video src="figs/BJH079_ct_rotation_traj_R_and_metal_voxels.mp4" controls width="700">
+    Your browser does not support the video tag. <a href="figs/BJH079_ct_rotation_traj_R_and_metal_voxels.mp4">Download the MP4</a>.
+  </video>
+</p>
+
+<p align="center">
+  <img src="figs/BJH079_cylinder_around_planned_traj_lead_R.png" alt="cylinder around the planned trajectory for localizing CT voxels corresponding to this lead" width="600">
+</p>
+
+*Figure: Extracted metal voxels and the planned trajectory for one lead*  
+
+### step 3
+
 
 ## Tutorial
 Please use this link (https://ganshengt.github.io/intracranial_contact_loc/) for detailed documentation.
