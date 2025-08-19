@@ -28,7 +28,7 @@ This step is essential in both **clinical practice** and **neuroscience research
   - Enabling reproducible and anatomically grounded scientific discovery.  
 
 <p align="center">
-  <img src="figs/dixielectrode_example.png" alt=" An example of iEEG elecrtode" width="600">
+  <img src="figs/dixielectrode_example.jpg" alt=" An example of iEEG elecrtode" width="600">
 </p>
 *Figure: An example of iEEG elecrtode* 
 
