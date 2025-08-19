@@ -69,7 +69,7 @@ We visualize the **metal voxel isosurface** to sanity-check the threshold and th
 ### step 2-2: seed growing algorithm for lead identification
 
 <p align="center">
-  <img src="BJH079_isolate_metal_close_to_plan_trajectory_as_part_of_metal_voxels_lead_R.png" alt=" metal voxels within the cyliner around the planned trajctory " width="600">
+  <img src="figs/BJH079_isolate_metal_close_to_plan_trajectory_as_part_of_metal_voxels_lead_R.png" alt=" metal voxels within the cyliner around the planned trajctory " width="600">
 </p>
 *Figure: metal voxels within the cyliner around the planned trajctory*  
 
@@ -80,25 +80,25 @@ To achieve this, multiple seeds are initialized within the metal cluster, and ea
 To prevent growth onto adjacent leads, we evaluate the filling ratio of a cylindrical tube aligned with the planned trajectory and encompassing the current voxel pool. Because different leads typically have offsets or angular deviations relative to the planned path, including voxels from another lead would substantially reduce the cylinder’s filling ratio. This provides a natural safeguard against erroneous extension across multiple leads.
 
 <p align="center">
-  <img src="BJH079_get_seeds_for_growing_to_identify_lead_R.png" alt=" seed growing algorithm to map out exact voxels corresponding to this lead " width="600">
+  <img src="figs/BJH079_get_seeds_for_growing_to_identify_lead_R.png" alt=" seed growing algorithm to map out exact voxels corresponding to this lead " width="600">
 </p>
 *Figure: seed growing algorithm to map out exact voxels corresponding to this lead. Colors represent intensity and circle representing initial seeds* 
 
 <p align="center">
-  <img src="BJH079_modeling_lead_R_by_tube_fiting.png" alt=" seed growing algorithm to map out exact voxels corresponding to this lead " width="600">
+  <img src="figs/BJH079_modeling_lead_R_by_tube_fiting.png" alt=" seed growing algorithm to map out exact voxels corresponding to this lead " width="600">
 </p>
 *Figure: example of a tube fitting* 
 
 Furthermore, we identify the proximal entry point and the most distal point based on segmenting the brain from the CT. We checked the interception between the identified lead voxel and the brain mask and check which direction (between the two end points, that is, the interception point and the distal point) align with the boundary to center vectors from the brain mask.
 
 <p align="center">
-  <img src="BJH079_parts_of_lead_R_inside_or_skull_proximal_distal.png" alt="identified lead voxels, proximal and distal points" width="600">
+  <img src="figs/BJH079_parts_of_lead_R_inside_or_skull_proximal_distal.png" alt="identified lead voxels, proximal and distal points" width="600">
 </p>
 *Figure: example of identified lead voxels, proximal and distal points 
 
 ### step 3: modeling lead as a linear or bezier function
 <p align="center">
-  <img src="BJH079_tube_auc_score_changing_radius_for_choosing_line_and_bezier_lead_R.png" alt="BIC criteria to decide fitting models" width="600">
+  <img src="figs/BJH079_tube_auc_score_changing_radius_for_choosing_line_and_bezier_lead_R.png" alt="BIC criteria to decide fitting models" width="600">
 </p>
 *Figure: example of roc curve, the curve shows how many voxels is included if increase the radius of a tube along a linear line or a bezier function
 
