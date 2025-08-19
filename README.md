@@ -117,7 +117,7 @@ After modeling the lead, we calculate electrode likelihood along the modelled li
 *Figure: Electrode likelihood along the lead model. This curve is calculated from the lead shown above where humans eyes can not identify contacts from the CT images (the lead present itself as a continuous bright streak).
 
 <p align="center">
-  <img src="figs/BJH079_identify_contact_from_lead_R_anulus_score.png" alt="identified contact based on elecrtode likelihood values" width="600">
+  <img src="figs/BJH079_identify_contact_from_lead_R_colorcode_surface_intensitypng" alt="identified contact based on elecrtode likelihood values" width="600">
 </p>
 *Figure: We used the electrode spacing from the manufacturer and performed global shift to estimate electrode locations such that the electrodes location overlay with maximum elecrtode likelihood.
 
@@ -134,9 +134,9 @@ Most of the time, the lead is presented as segmented line in the CT images, wher
 *Figure: Electrode likelihood along the lead model. This curve is calculated from the lead shown above where humans eyes can not identify contacts from the CT images (the lead present itself as a continuous bright streak).
 
 <p align="center">
-  <img src="figs/BJH079_identify_contact_from_lead_U'_anulus_score.png" alt="identified contact based on elecrtode likelihood values" width="600">
+  <img src="figs/BJH079_identify_contact_from_lead_U'_colorcode_surface_intensity.png" alt="identified contact based on elecrtode likelihood values" width="600">
 </p>
-*Figure: We used the electrode spacing from the manufacturer and performed global shift to estimate electrode locations such that the electrodes location overlay with maximum elecrtode likelihood.
+*Figure: We used the electrode spacing from the manufacturer and performed global shift to estimate electrode locations such that the electrodes location overlay with maximum elecrtode likelihood. The green line represents the fitted lead model and the red dots represented identified electrodes.
 
 <p align="center">
   <img src="figs/BJH079_identifying_electrodes_on_lead_U'.png" alt="3d rendering of electrodes in relation with the metal voxels" width="600">
