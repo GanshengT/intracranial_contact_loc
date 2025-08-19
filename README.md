@@ -117,7 +117,7 @@ After modeling the lead, we calculate electrode likelihood along the modelled li
 *Figure: Electrode likelihood along the lead model. This curve is calculated from the lead shown above where humans eyes can not identify contacts from the CT images (the lead present itself as a continuous bright streak).
 
 <p align="center">
-  <img src="figs/BJH079_identify_contact_from_lead_R_colorcode_surface_intensitypng" alt="identified contact based on elecrtode likelihood values" width="600">
+  <img src="figs/BJH079_identify_contact_from_lead_R_colorcode_surface_intensity.png" alt="identified contact based on elecrtode likelihood values" width="600">
 </p>
 *Figure: We used the electrode spacing from the manufacturer and performed global shift to estimate electrode locations such that the electrodes location overlay with maximum elecrtode likelihood.
 
