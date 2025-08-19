@@ -27,6 +27,11 @@ This step is essential in both **clinical practice** and **neuroscience research
   - Understanding network-level dynamics of cognition and disease.  
   - Enabling reproducible and anatomically grounded scientific discovery.  
 
+<p align="center">
+  <img src="figs/dixielectrode_example.png" alt=" An example of iEEG elecrtode" width="600">
+</p>
+*Figure: An example of iEEG elecrtode* 
+
 Precise and **objective localization** is thus critical. However, most workflows still rely heavily on **manual localization**, which presents two major limitations:  
 
 1. **Subjectivity** – human raters must distinguish contacts on CT scans that often suffer from streak artifacts and noisy intensity. For example, an isosurface in FreeSurfer may appear as a continuous lead, making individual contacts ambiguous.  
@@ -100,9 +105,50 @@ Furthermore, we identify the proximal entry point and the most distal point base
 <p align="center">
   <img src="figs/BJH079_tube_auc_score_changing_radius_for_choosing_line_and_bezier_lead_R.png" alt="BIC criteria to decide fitting models" width="600">
 </p>
-*Figure: example of roc curve, the curve shows how many voxels is included if increase the radius of a tube along a linear line or a bezier function
+*Figure: example of roc curve, the curve shows how many voxels is included if increase the radius of a tube along a linear line or a bezier function. A negative BIC change from linear Bezier will suggest bending during the lead implentation. For 99% lead implented in WashU, the lead is straight and can be modelled with a linear function.
 
 ### step 4: electrode localization
+
+After modeling the lead, we calculate electrode likelihood along the modelled line/curve. An electrode can be modelled by a cylinder with radius and length. For each location, we subtract the background (outter shell) CT intensity from the elecrtode cylinder intensity as the electrode likelihood.
+
+<p align="center">
+  <img src="figs/BJH079_identify_contact_from_lead_R_anulus_score.png" alt="electrode likelihood along the fitted line" width="600">
+</p>
+*Figure: Electrode likelihood along the lead model. This curve is calculated from the lead shown above where humans eyes can not identify contacts from the CT images (the lead present itself as a continuous bright streak).
+
+<p align="center">
+  <img src="figs/BJH079_identify_contact_from_lead_R_anulus_score.png" alt="identified contact based on elecrtode likelihood values" width="600">
+</p>
+*Figure: We used the electrode spacing from the manufacturer and performed global shift to estimate electrode locations such that the electrodes location overlay with maximum elecrtode likelihood.
+
+<p align="center">
+  <img src="figs/BJH079_identifying_electrodes_on_lead_R.png" alt="3d rendering of electrodes in relation with the metal voxels" width="600">
+</p>
+*Figure: 3D rendering of the electrodes and metal voxels identified from CT imagings.
+
+Most of the time, the lead is presented as segmented line in the CT images, where electrodes are separated. Below is an example of a typical lead in CT images.
+
+<p align="center">
+  <img src="figs/BJH079_identify_contact_from_lead_U'_anulus_score.png" alt="electrode likelihood along the fitted line" width="600">
+</p>
+*Figure: Electrode likelihood along the lead model. This curve is calculated from the lead shown above where humans eyes can not identify contacts from the CT images (the lead present itself as a continuous bright streak).
+
+<p align="center">
+  <img src="figs/BJH079_identify_contact_from_lead_U'_anulus_score.png" alt="identified contact based on elecrtode likelihood values" width="600">
+</p>
+*Figure: We used the electrode spacing from the manufacturer and performed global shift to estimate electrode locations such that the electrodes location overlay with maximum elecrtode likelihood.
+
+<p align="center">
+  <img src="figs/BJH079_identifying_electrodes_on_lead_U'.png" alt="3d rendering of electrodes in relation with the metal voxels" width="600">
+</p>
+*Figure: 3D rendering of the electrodes and metal voxels identified from CT imagings.
+
+### Validation
+
+<p align="center">
+  <img src="figs/freesurfer_example.png" alt="validation" width="600">
+</p>
+*Figure: The localization results are validated in freesurfer.
 
 ## Tutorial
 Please use this link (https://ganshengt.github.io/intracranial_contact_loc/) for detailed documentation.
