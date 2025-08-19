@@ -14,4 +14,5 @@ Gansheng Tan (g.tan@wustl.edu)
 Updates:
 2025 Aug 19, I developed an automated pipeline for estimating intracranial electrode location based on CT images and manufacture information of the electrode lead. The main script has been tested on DIXI electrodes.
 
-
+## License
+Distributed under the [MIT License](../LICENSE).

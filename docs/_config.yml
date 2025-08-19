@@ -1,0 +1,10 @@
+title: Intracranial Contact Localization
+description: Electrode localization pipeline and examples
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-seo-tag
+  - jekyll-readme-index
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
