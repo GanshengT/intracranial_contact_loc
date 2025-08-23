@@ -1,0 +1,21 @@
+name: Octave Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Octave
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y octave
+
+      - name: Run tests
+        run: |
+          cd automated_pipeline/imaging_processing_scripts/automatic_localize
+          octave --no-gui --quiet test_safe_ratio.m
