@@ -17,5 +17,7 @@ jobs:
 
       - name: Run tests
         run: |
-          octave --no-gui --quiet automated_pipeline/imaging_processing_scripts/automatic_localize/test_safe_ratio.m
-          octave --no-gui --quiet automated_pipeline/imaging_processing_scripts/automatic_localize/test_robust_sum.m
+          cd automated_pipeline/imaging_processing_scripts/automatic_localize
+          octave --no-gui --quiet test_safe_ratio.m
+          octave --no-gui --quiet test_robust_sum.m
+
