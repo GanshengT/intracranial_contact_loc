@@ -10,8 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Octave
-        uses: actions/setup-octave@v1 # Use the setup-octave action
+      - name: Install Octave
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y octave
 
       - name: Run tests
         run: |
