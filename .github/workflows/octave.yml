@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Octave
+        uses: actions/setup-octave@v1 # Use the setup-octave action
+
       - name: Run tests
         run: |
           cd automated_pipeline/imaging_processing_scripts/automatic_localize
