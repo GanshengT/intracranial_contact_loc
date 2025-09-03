@@ -1398,7 +1398,8 @@ elseif use_shank_model
          % distal tip (deepest point inside brain).
 
         % robust method
-        score_pose = @(C,u) score_pose_contrast(C,u,rad_mm,len_mm,Avox2ras0,double(ctVol),vx);
+        insulating_spacer_length = DIXI_am_spacing - DIXI_am_contact_length;
+        score_pose = @(C,u) score_pose_contrast_whole_cylinder_shell(C,u,out.rmm_975,len_mm,Avox2ras0,double(ctVol),vx, insulating_spacer_length);
         ds = min(vx)/2;                                % mm step
         s_grid = (0:ds:Ltot + DIXI_am_spacing/2).';
         p = zeros(numel(s_grid),1);
