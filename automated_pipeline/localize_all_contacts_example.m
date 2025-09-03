@@ -1516,11 +1516,15 @@ elseif use_shank_model
         end
         nexttile(2); % second panel in the tiledlayout
         s_refined_orig = s_exp_orig;
-        stem_safe(s_refined, p_of_s_safe(s_refined), 'Marker','o','Color',[0.05 0.90 0], 'DisplayName','refined (orig)');
-
-
-
-        contact_s = s_refined_orig(:);                           % Nx1
+                if mdl.type == 'MME'
+            contact_s = s_refined(mdl.active_idx);
+        else
+            contact_s = s_refined(:);         
+        end
+        % Nx1
+        stem_safe(contact_s, p_of_s_safe(contact_s), 'Marker','o','Color',[0.05 0.90 0], 'DisplayName','refined (orig)');
+        
+                  % Nx1
 
         cellsC = arrayfun(@(ss) pt_at_s(ss), contact_s, 'UniformOutput', false);
         contact_centers = cat(1, cellsC{:});     % or: vertcat(cellsC{:})

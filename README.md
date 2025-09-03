@@ -167,6 +167,19 @@ This method improves the localization of electrode contacts even when CT images 
 </p>
 *Figure: Updated elecrtode location estimation method can better identify electrode location in sinarios where individual contacts are not visually separable from each other.
 
+We also created new function for localization of DIXI MICRODEEP® MICRO-MACRO DEPTH ELECTRODES
+This is done by locating all macro-contacts and retain the functioning ones based on the electrode types: 6 macro-contacts / 3 tetrodes (12 micro-contacts)
+9 macro-contacts / 2 tetrodes (8 micro-contacts).
+
+<p align="center">
+  <img src="figs/MME.png" alt="localization MME" width="600">
+</p>
+*Figure: Localization of macro contacts on MME leads, there are 5 non-functioning macro contact on the lead. These contacts are to maintain the electrode “semi-ridged” design
+
+<p align="center">
+  <img src="figs/MME_reconstruct.png" alt="MME elecrtode results" width="600">
+</p>
+*Figure: Reconstructed electrodes based on estimated locations, overlaid on top of the metal surface generated based on CT imaging.
 
 ## Tutorial
 Please use this link (https://ganshengt.github.io/intracranial_contact_loc/) for detailed documentation.
