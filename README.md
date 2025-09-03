@@ -150,6 +150,24 @@ Most of the time, the lead is presented as segmented line in the CT images, wher
 </p>
 *Figure: The localization results are validated in freesurfer.
 
+## Updates Sep 3
+We have updated the method for estimating the most probable location for electrodes.
+The main update is defining a core and shell, the most probable location for an electrode is the location where the voxel intensity in the core is greater than the voxel intensity in the shell.
+The core is modeled to be a cylinder having the dimension provided by the manufacture
+The shell is defined to be a cylinder encompassing the core, which cover the insulating space (space between two electrodes), and the annulus surrounding the core (to capture the streak artifact resulting from metals in CT imaging)
+
+<p align="center">
+  <img src="figs/contact_scoring_weight.png" alt="illustration of the updated method" width="600">
+</p>
+*Figure: Visualization of the modelled shell and core.
+
+This method improves the localization of electrode contacts even when CT images are noisy (aka, the scattering of the electrode obscures the boundary between electrodes, making the lead a non-segmented streak).
+<p align="center">
+  <img src="figs/BJH080_identify_contact_from_lead_A'_colorcode_surface_intensity.png" alt="validation" width="600">
+</p>
+*Figure: Updated elecrtode location estimation method can better identify electrode location in sinarios where individual contacts are not visually separable from each other.
+
+
 ## Tutorial
 Please use this link (https://ganshengt.github.io/intracranial_contact_loc/) for detailed documentation.
 
