@@ -101,6 +101,16 @@ Furthermore, we identify the proximal entry point and the most distal point base
 </p>
 *Figure: example of identified lead voxels, proximal and distal points 
 
+### step 2-3: isolating the lead of interest (in case two trajectory are crossing)
+In rare occasion, two trajectories were very close. For clinical reason, it is usually not ideal to have two parallel leads that are close (because the regions are already covered by one lead).
+
+Therefore, we implement a novel algorithm based on global coherence. Global coherence is defined as the cosine similarity of directions for vectors between a voxel of interest and other voxels (that are further from this voxel, which is identified by distance percentile). In this scenario, voxels that belong to one lead will have higher global coherence as the vectors between this voxel and other voxels follow the lead direction.
+
+<p align="center">
+  <img src="figs/BJH062_global_directional_coherence_to_only_keep_voxels_belonging_lead_E'.png" alt=" color denotes global coherence, each voxel is represented by a dot, dots with black outline denote voxels that are classified to belong to a different lead" width="600">
+</p>
+*Figure: additional processing for isolating the lead of interest*  
+
 ### step 3: modeling lead as a linear or bezier function
 <p align="center">
   <img src="figs/BJH079_tube_auc_score_changing_radius_for_choosing_line_and_bezier_lead_R.png" alt="BIC criteria to decide fitting models" width="600">
