@@ -187,7 +187,7 @@ This is done by locating all macro-contacts and retain the functioning ones base
 *Figure: Localization of macro contacts on MME leads, there are 5 non-functioning macro contact on the lead. These contacts are to maintain the electrode “semi-ridged” design
 
 <p align="center">
-  <img src="figs/MME_reconstruct.png" alt="MME elecrtode results" width="600">
+  <img src="figs/MME_reconstructed.png" alt="MME elecrtode results" width="600">
 </p>
 *Figure: Reconstructed electrodes based on estimated locations, overlaid on top of the metal surface generated based on CT imaging.
 
