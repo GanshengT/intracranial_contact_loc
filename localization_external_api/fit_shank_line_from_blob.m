@@ -12,7 +12,7 @@ function out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, s
     p.addParameter('BrainMaskMGZ', []);           % struct from MRIread or numeric vol
     p.addParameter('BrainMaskVox2RAS', []);       % MRI vox->RAS
     p.addParameter('VisualizeBands', false);
-    p.addParameter('VisualizeFinal', true);
+    p.addParameter('VisualizeFinal', false);
     p.addParameter('VisualizeTube_rmm', false);
     p.addParameter('VisualizeTube_rmm_975', false);
     p.addParameter('subj_id', []);
@@ -267,6 +267,9 @@ function out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, s
     if opt.VisualizeTube_rmm
         nTheta = 40; nSeg = 40; % mesh resolution
         figure('Color','w'); hold on;
+        % [Xm, Ym, Zm] = meshgrid(1:size(BW_brain_CT,1), ...
+    %                   1:size(BW_brain_CT,2), ...
+    %                   1:size(BW_brain_CT,3));
     
         % (1) Visualize base metal structures
         [Xm, Ym, Zm] = meshgrid(1:size(metal_in,2),1:size(metal_in,1),1:size(metal_in,3));
@@ -428,23 +431,24 @@ function out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, s
         winner = ["Line","Bézier"];
         winner = winner(bestIdx);
     
-        leg = legend({'Line','Bézier'}, 'Location','southeast');
-        set(leg, 'AutoUpdate','off');
-        txty = 0.15;
-        text(0.60*Rmax_mm, txty+0.16, sprintf('Winner: %s (lower BIC)', winner), ...
-            'FontWeight','bold', 'Color','k');
-        text(0.60*Rmax_mm, txty+0.10, sprintf('Line   AUC=%.3f  BIC=%.1f  ΔBIC=%.1f ', ...
-            AUC_line_curve, BIC_line, dBIC_line), 'Color','k');
-        text(0.60*Rmax_mm, txty+0.04, sprintf('Bézier AUC=%.3f  BIC=%.1f  ΔBIC=%.1f ', ...
-            AUC_bez_curve,  BIC_bez,  dBIC_bez),  'Color','g');
+        % comment for masking the plots
+        % leg = legend({'Line','Bézier'}, 'Location','southeast');
+        % set(leg, 'AutoUpdate','off');
+        % txty = 0.15;
+        % text(0.60*Rmax_mm, txty+0.16, sprintf('Winner: %s (lower BIC)', winner), ...
+        %     'FontWeight','bold', 'Color','k');
+        % text(0.60*Rmax_mm, txty+0.10, sprintf('Line   AUC=%.3f  BIC=%.1f  ΔBIC=%.1f ', ...
+        %     AUC_line_curve, BIC_line, dBIC_line), 'Color','k');
+        % text(0.60*Rmax_mm, txty+0.04, sprintf('Bézier AUC=%.3f  BIC=%.1f  ΔBIC=%.1f ', ...
+        %     AUC_bez_curve,  BIC_bez,  dBIC_bez),  'Color','g');
     
         % Optional: star the winner curve
-        if bestIdx == 1
-            plot(NaN,NaN,'k*','MarkerSize',10,'DisplayName','Winner');
-        else
-            plot(NaN,NaN,'g*','MarkerSize',10,'DisplayName','Winner');
-        end
-        legend('show');
+        % if bestIdx == 1
+        %     plot(NaN,NaN,'k*','MarkerSize',10,'DisplayName','Winner');
+        % else
+        %     plot(NaN,NaN,'g*','MarkerSize',10,'DisplayName','Winner');
+        % end
+        % legend('show');
     
         use_bezier = (DeltaBIC > 10);
         t_samp = linspace(0,1,200).';
@@ -457,10 +461,10 @@ function out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, s
         end
     end
     
-    % --- Save diagnostic figure ---
-    filename = [opt.subj_id, '_tube_auc_diagnostic_', opt.traj_id];
-    full_path = fullfile(opt.report_dir, [filename, '.pdf']);
-    saveas(gcf, full_path, 'pdf');
+    % --- Save diagnostic figure --- optional, commented
+    % filename = [opt.subj_id, '_tube_auc_diagnostic_', opt.traj_id];
+    % full_path = fullfile(opt.report_dir, [filename, '.pdf']);
+    % saveas(gcf, full_path, 'pdf');
     
    
     % Use inliers if available; else all P

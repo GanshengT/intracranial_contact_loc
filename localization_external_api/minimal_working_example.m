@@ -16,6 +16,8 @@ im.electrode_info = im_struct.electrode_info;
 % g.tan@wustl.edu
 
 %   im        : struct with fields (all in coregistered-CT→MRI space)
+% ct_volume_registered_to_mri can be obtained using MRIread(CT.nii),
+% MRIread from freesurfer/Matlab
 %                 .ct_volume_registered_to_mri.vol       [I×J×K] CT (numeric)
 %                 .ct_volume_registered_to_mri.vox2ras1  4×4 (voxel1→RAS)
 %                 .ct_volume_registered_to_mri.vox2ras0  4×4 (voxel0→RAS)
@@ -31,6 +33,9 @@ electrode_manufacture = 'DIXI';
 % 5 either from Gt's sugmentation or from freesurfer (not freesurfer might
 % call it brainmask.mgz), I used automatic segmentation
 bm_path = 'BJH075_brainmask.auto.mgz';
+% you can set the folder path for storing the results here, for example,
+% curr_dir = pwd;
+% then input 'curr_dir', curr_dir to the function.
 
 [contact_tbl, shank_model_all, paths] = localize_electrode_gt_small_example(im, subj_id, "electrode_manufacture", electrode_manufacture, ...
     "bm_path", bm_path);

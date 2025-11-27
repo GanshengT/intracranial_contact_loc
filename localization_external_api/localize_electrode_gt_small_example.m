@@ -60,6 +60,7 @@ function [contact_tbl, shank_model_all, paths] = localize_electrode_gt_small_exa
 arguments
     imaging_processing_info_struct
     subj_id
+    opts.curr_dir (1,1) string = pwd   % <--- NEW: default = pwd
 
     % System
     opts.freesurfer_matlab_path   (1,1) string  = "/Applications/freesurfer/8.1.0/matlab"
@@ -190,7 +191,9 @@ sub_vol_range_mm = opts.sub_vol_range_mm;
 % the tip is a cylinder of 0.2mm diameter of 1mm length
 % micro_contact_id = 99;
 
-curr_dir = pwd;
+% default set at argument
+% curr_dir = pwd;
+curr_dir = opts.curr_dir;
 temp_folder = fullfile(curr_dir, 'imaging_processing_temp_folder');
 
 % Create it if it doesn't exist, for storing cache, again no need for this
@@ -200,26 +203,24 @@ if ~exist(temp_folder, 'dir')
 end
 
 
-
-
-automated_aligned_to_brightest_voxel_macro_contacts_folder = [curr_dir, ...
-    '/automated_aligned_to_brightest_voxel_macro_contacts'];
+automated_aligned_to_brightest_voxel_macro_contacts_folder = fullfile(curr_dir, ...
+    '/automated_aligned_to_brightest_voxel_macro_contacts');
 if ~exist(automated_aligned_to_brightest_voxel_macro_contacts_folder, 'dir')
     mkdir(automated_aligned_to_brightest_voxel_macro_contacts_folder);
 end
 
-automated_shank_center_line_folder = [curr_dir, ...
-    '/automated_shank_center_lines'];
+automated_shank_center_line_folder = fullfile(curr_dir, ...
+    '/automated_shank_center_lines');
 if ~exist(automated_shank_center_line_folder, 'dir')
     mkdir(automated_shank_center_line_folder);
 end
 
-% save contacts' location visualization
-report_contacts_related_surf_folder = [curr_dir, ...
-    '/report_contacts_related_surf_folder'];
-if ~exist(report_contacts_related_surf_folder, 'dir')
-    mkdir(report_contacts_related_surf_folder);
-end
+% save contacts' location visualization - disabled here
+% report_contacts_related_surf_folder = fullfile(curr_dir, ...
+%     '/report_contacts_related_surf_folder');
+% if ~exist(report_contacts_related_surf_folder, 'dir')
+%     mkdir(report_contacts_related_surf_folder);
+% end
 
 % region of interest - disabled, this is for GT's parcellation, one can use
 % freesurfer as alternatives, freesurfer also provides some standard
@@ -515,23 +516,30 @@ for i_traj = 1:numel(i_traj_list)
     end_traj = imaging_processing_info_struct.coregistered_to_mri_trajectory.trajectory(i_traj).end;
 
     % below are known rosa registration erros
+    % % !! very important !!
+    % if the trajectory in the rosa robot system is wrong, which can
+    % happens in the OR, electrode localization will be affected
+    % systematic check of correct trajectory is not enabled in this version
+    % therefore, it is the user's responsibility to ensure that the end_traj and
+    % start_traj are correct
+
     
-    if strcmp(subj_id, 'BJH046') && strcmp(traj_id, "G'")
-        end_traj = [18.15, 42.95, 6.41];
-    elseif strcmp(subj_id, 'BJH046') && strcmp(traj_id, "N'")
-        end_traj = [8.31, 18.80, 39.90];
-    elseif strcmp(subj_id, 'BJH041') && strcmp(traj_id, "A' AMY")
-        end_traj = [-12.28, -5.75, -24.71];
-    elseif strcmp(subj_id, 'BJH058') && strcmp(traj_id, "O (preCe6 FEF8d prSMA)")
-        start_traj = [36.00, -10.53, 63.07];
-        end_traj = [3.53, -9.64, 67.45];
-    elseif strcmp(subj_id, 'BJH055') && strcmp(traj_id, "L'")
-        end_traj = [-9.38, 23.91, 37.85];
-        % lead twist (hit hard tissue)
-    elseif strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")
-        end_traj = [8.91, 7.98, 11.34];
-        
-    end
+    % if strcmp(subj_id, 'BJH046') && strcmp(traj_id, "G'")
+    %     end_traj = [18.15, 42.95, 6.41];
+    % elseif strcmp(subj_id, 'BJH046') && strcmp(traj_id, "N'")
+    %     end_traj = [8.31, 18.80, 39.90];
+    % elseif strcmp(subj_id, 'BJH041') && strcmp(traj_id, "A' AMY")
+    %     end_traj = [-12.28, -5.75, -24.71];
+    % elseif strcmp(subj_id, 'BJH058') && strcmp(traj_id, "O (preCe6 FEF8d prSMA)")
+    %     start_traj = [36.00, -10.53, 63.07];
+    %     end_traj = [3.53, -9.64, 67.45];
+    % elseif strcmp(subj_id, 'BJH055') && strcmp(traj_id, "L'")
+    %     end_traj = [-9.38, 23.91, 37.85];
+    %     % lead twist (hit hard tissue)
+    % elseif strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")
+    %     end_traj = [8.91, 7.98, 11.34];
+    % 
+    % end
 
     % viz
     [m,n,p] = size(BW);
@@ -571,40 +579,40 @@ for i_traj = 1:numel(i_traj_list)
         entry_ras = P(hit,:); % proximal (on skull)
     end
 
-% instruction here, for correct traj, this parameter does not matter, for
+% instruction: for correct traj, this parameter does not matter, for
 % users using only rosa executed files, this needs to adjust, because there
 % are coregistration error between physical space and rosa file space
     roi_rad_mm = 4;
     % 41 A' needs to be special, because two leads are very close
-    if strcmp(subj_id, 'BJH062') && strcmp(traj_id, "E'") ||...
-         strcmp(subj_id, 'BJH062') && strcmp(traj_id, "G'")||...
-         strcmp(subj_id, 'BJH056') && strcmp(traj_id, "G") ||...
-         strcmp(subj_id, 'SLCH024') && strcmp(traj_id, "M") ||...
-         strcmp(subj_id, 'SLCH020') && strcmp(traj_id, "I") ||...
-         strcmp(subj_id, 'SLCH017') && strcmp(traj_id, "H SENS SUP")||...
-         strcmp(subj_id, 'BJH045') && strcmp(traj_id, "N")||...
-         strcmp(subj_id, 'BJH037') && strcmp(traj_id, "F R ITG FUG EC BENKE")||...
-         strcmp(subj_id, 'BJH037') && strcmp(traj_id, "B R MTG AHC BENKE")||...
-         strcmp(subj_id, 'BJH040') && strcmp(traj_id, "Y Y' MFG BIL R CING")
-        roi_rad_mm = 6;
-    % this is for subject where planing is very far away from
-        % executed
-    elseif strcmp(subj_id, 'SLCH018') && strcmp(traj_id, "L ORB FRNT CORTEX") ||...
-         strcmp(subj_id, 'SLCH018') && strcmp(traj_id, "L PST CING") ||...
-         strcmp(subj_id, 'BJH045') && strcmp(traj_id, "L") ||...
-         strcmp(subj_id, 'BJH045') && strcmp(traj_id, "M") ||...
-         strcmp(subj_id, 'BJH045') && strcmp(traj_id, "B") ||...
-         strcmp(subj_id, 'BJH045') && strcmp(traj_id, "I") ||...
-         strcmp(subj_id, 'BJH035') && strcmp(traj_id, "E") ||...
-         strcmp(subj_id, 'BJH040') && strcmp(traj_id, "M PO PERC DLNS ANT")||...
-         strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")||...
-         strcmp(subj_id, 'BJH040') && strcmp(traj_id, "I' ASTG TPC")||...
-         strcmp(subj_id, 'BJH040') && strcmp(traj_id, "I ITG EC")
-        roi_rad_mm = 7;
-    elseif strcmp(subj_id, 'BJH045') && strcmp(traj_id, "O") ||...
-         strcmp(subj_id, 'BJH035') && strcmp(traj_id, "D") 
-        roi_rad_mm = 8;
-    end
+    % if strcmp(subj_id, 'BJH062') && strcmp(traj_id, "E'") ||...
+    %      strcmp(subj_id, 'BJH062') && strcmp(traj_id, "G'")||...
+    %      strcmp(subj_id, 'BJH056') && strcmp(traj_id, "G") ||...
+    %      strcmp(subj_id, 'SLCH024') && strcmp(traj_id, "M") ||...
+    %      strcmp(subj_id, 'SLCH020') && strcmp(traj_id, "I") ||...
+    %      strcmp(subj_id, 'SLCH017') && strcmp(traj_id, "H SENS SUP")||...
+    %      strcmp(subj_id, 'BJH045') && strcmp(traj_id, "N")||...
+    %      strcmp(subj_id, 'BJH037') && strcmp(traj_id, "F R ITG FUG EC BENKE")||...
+    %      strcmp(subj_id, 'BJH037') && strcmp(traj_id, "B R MTG AHC BENKE")||...
+    %      strcmp(subj_id, 'BJH040') && strcmp(traj_id, "Y Y' MFG BIL R CING")
+    %     roi_rad_mm = 6;
+    % % this is for subject where planing is very far away from
+    %     % executed
+    % elseif strcmp(subj_id, 'SLCH018') && strcmp(traj_id, "L ORB FRNT CORTEX") ||...
+    %      strcmp(subj_id, 'SLCH018') && strcmp(traj_id, "L PST CING") ||...
+    %      strcmp(subj_id, 'BJH045') && strcmp(traj_id, "L") ||...
+    %      strcmp(subj_id, 'BJH045') && strcmp(traj_id, "M") ||...
+    %      strcmp(subj_id, 'BJH045') && strcmp(traj_id, "B") ||...
+    %      strcmp(subj_id, 'BJH045') && strcmp(traj_id, "I") ||...
+    %      strcmp(subj_id, 'BJH035') && strcmp(traj_id, "E") ||...
+    %      strcmp(subj_id, 'BJH040') && strcmp(traj_id, "M PO PERC DLNS ANT")||...
+    %      strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")||...
+    %      strcmp(subj_id, 'BJH040') && strcmp(traj_id, "I' ASTG TPC")||...
+    %      strcmp(subj_id, 'BJH040') && strcmp(traj_id, "I ITG EC")
+    %     roi_rad_mm = 7;
+    % elseif strcmp(subj_id, 'BJH045') && strcmp(traj_id, "O") ||...
+    %      strcmp(subj_id, 'BJH035') && strcmp(traj_id, "D") 
+    %     roi_rad_mm = 8;
+    % end
 
     ROI = cylinder_roi_mask(size(ctVol), Avox2ras0, start_traj, end_traj, roi_rad_mm);
     
@@ -726,8 +734,6 @@ for i_traj = 1:numel(i_traj_list)
     cmap = turbo;
     cvals = cos_vals;
     
-   
-
 
 
     % remove tiny islands - skip
@@ -750,15 +756,23 @@ for i_traj = 1:numel(i_traj_list)
     % for efficiency
     bm = MRIread(bm_path);
     % this electrode bends
-    if strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")
-        out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, start_traj, end_traj, ...
+    % for bended electrode, we use 'curved', true, this can be added as
+    % function input, but with DIXI electrode, the lead is straight!
+    % if strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")
+    %     out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, start_traj, end_traj, ...
+    %         'BrainMaskMGZ', bm, 'BrainMaskVox2RAS', bm.vox2ras0, 'VisualizeFinal', false, 'VisualizeBands', false, ...
+    %         'subj_id', subj_id, 'report_dir', temp_folder, 'traj_id', traj_id, 'curved', true);
+    % else
+    %     out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, start_traj, end_traj, ...
+    %         'BrainMaskMGZ', bm, 'BrainMaskVox2RAS', bm.vox2ras0, 'VisualizeFinal', false, 'VisualizeBands', false, ...
+    %         'subj_id', subj_id, 'report_dir', temp_folder, 'traj_id', traj_id);
+    % end
+
+    out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, start_traj, end_traj, ...
             'BrainMaskMGZ', bm, 'BrainMaskVox2RAS', bm.vox2ras0, 'VisualizeFinal', false, 'VisualizeBands', false, ...
-            'subj_id', subj_id, 'report_dir', temp_folder, 'traj_id', traj_id, 'curved', true);
-    else
-        out = fit_shank_line_from_blob(metal_roi_unique, BW_skull, Avox2ras0, start_traj, end_traj, ...
-            'BrainMaskMGZ', bm, 'BrainMaskVox2RAS', bm.vox2ras0, 'VisualizeFinal', false, 'VisualizeBands', false, ...
+            'VisualizeTube_rmm', false, 'VisualizeTube_rmm_975', false,...
             'subj_id', subj_id, 'report_dir', temp_folder, 'traj_id', traj_id);
-    end
+
     % when fitting the bolb, we only consider the part within the skull
     % below code is for diagnostic 
    
@@ -852,12 +866,14 @@ for i_traj = 1:numel(i_traj_list)
     % spaceing to 1/2 spacing, the spacing is center-to-center distance
     delta_lo = -DIXI_am_spacing * 2 / 3;
     delta_hi = DIXI_am_spacing/2;
-    if (strcmp(subj_id, 'SLCH024') && strcmp(traj_id, "E")) ||...
-       (strcmp(subj_id, 'SLCH024') && strcmp(traj_id, "M")) ||...
-       (strcmp(subj_id, 'SLCH018') && strcmp(traj_id, "L PST CING"))
-        delta_lo = -DIXI_am_spacing * 1 / 3;
-        delta_hi = DIXI_am_spacing * 2 / 3;
-    end
+
+    % below adjustment is for cases when the star-traj and end-traj has registration error, 
+    % if (strcmp(subj_id, 'SLCH024') && strcmp(traj_id, "E")) ||...
+    %    (strcmp(subj_id, 'SLCH024') && strcmp(traj_id, "M")) ||...
+    %    (strcmp(subj_id, 'SLCH018') && strcmp(traj_id, "L PST CING"))
+    %     delta_lo = -DIXI_am_spacing * 1 / 3;
+    %     delta_hi = DIXI_am_spacing * 2 / 3;
+    % end
     delta_grid = linspace(delta_lo, delta_hi, 121);
 
     % delta_grid = linspace(-DIXI_am_spacing, +DIXI_am_spacing, 121);   % widen if needed, in mm
@@ -931,9 +947,11 @@ for i_traj = 1:numel(i_traj_list)
     % --- PER-CONTACT MICRO REFINE (around each seed)
     ds     = s_grid(2)-s_grid(1);
     ax_win = DIXI_am_spacing / 20; 
-    if strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")
-        ax_win = DIXI_am_spacing / 5;
-    end
+
+    % adjustment needed when start traj and end traj are not correct
+    % if strcmp(subj_id, 'BJH040') && strcmp(traj_id, "O PORB OFG")
+    %     ax_win = DIXI_am_spacing / 5;
+    % end
     
     s_refined = nan(size(s_seed));
     for k = 1:numel(s_seed)
@@ -976,8 +994,6 @@ for i_traj = 1:numel(i_traj_list)
                                    0.6*(mdl.diameter_mm/2), 0.6*len_mm), (1:numel(contact_s))');
 
 
-
-    
     
     % reorganize output to struct
     % put electrode coordinates in to contact_data_table
@@ -1049,15 +1065,15 @@ for i_traj = 1:numel(i_traj_list)
 
     % save as we go, as this process might take about 10 minutes per
     % lead
-    table_filename = [temp_folder, '/', subj_id,  ...
-        '_contact_data_table.mat'];
+    table_filename = fullfile(temp_folder, [subj_id,  ...
+        '_contact_data_table.mat']);
     save(table_filename, 'contact_tbl', '-v7.3');
     contact_data_struct = table2struct(contact_tbl);
-    table_filename = [temp_folder, ...
-        '/', subj_id, '_contact_data_table_struct.mat'];
+    table_filename = fullfile(temp_folder, ...
+        [subj_id, '_contact_data_table_struct.mat']);
     save(table_filename, 'contact_data_struct', '-v7.3');
     imaging_processing_info_struct.shank_model_all = shank_model_all;
-    save([temp_folder, '/', subj_id, '_imaging_processing_info_struct_update.mat'], 'imaging_processing_info_struct', '-v7.3');
+    save(fullfile(temp_folder,  [subj_id, '_imaging_processing_info_struct_update.mat']), 'imaging_processing_info_struct', '-v7.3');
 
 end
 
