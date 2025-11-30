@@ -30,8 +30,7 @@ im.electrode_info = im_struct.electrode_info;
 % are from different manufactures. Please use a list such as ['PMT',
 % 'adtech', ...], currently support adtech, PMT and DIXI, you can add more.
 % For batch processing, one should consider adding a reading function that
-% reads from a txt or csv files where manufacturer for each electrode is
-% stored.
+% r
 electrode_manufacture = 'DIXI';
 % 5 either from GT's sugmentation or from freesurfer (not freesurfer might
 % call it brainmask.mgz), I used automatic segmentation
