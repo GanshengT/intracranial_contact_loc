@@ -578,7 +578,7 @@ for i_traj = 1:numel(i_traj_list)
     linInd = sub2ind(sz, IJ1(:,1), IJ1(:,2), IJ1(:,3));
     hit = find(BW_skull(linInd), 1, 'first');
     if isempty(hit)
-        warning('NOT FETAL: No skull intersection found on traj %s; check boneThr.', traj_id);
+        warning('NOT FATAL: No skull intersection found on traj %s; check boneThr.', traj_id);
         entry_ras = start_traj; % use trajectory start point as fallback
     else
         entry_ras = P(hit,:); % proximal (on skull)
