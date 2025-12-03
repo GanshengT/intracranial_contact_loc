@@ -191,6 +191,13 @@ This is done by locating all macro-contacts and retain the functioning ones base
 </p>
 *Figure: Reconstructed electrodes based on estimated locations, overlaid on top of the metal surface generated based on CT imaging.
 
+## External API support
+One can plug in this function in existing Imaging processing pipeline by calling gt_automatic_localize_electrode.m. A minimal working example called minimal_working_example.m shows how to properly provide input to the function. An example of integration is the successful integration into [VERA](https://github.com/neurotechcenter/VERA/wiki/IntracranialContactLocalization).
+
+Please note that CT scans in NIFTY format and electrode specification are required.
+
+Additionally, for windows users, zipped imaging files xxxxx.mgz are not supported by MRIread function from freesurfer (which is used in this external wrapper function). Therefore, please provide unzipped imaging files xxxxx.mgh as input. 
+
 ## Tutorial
 Please use this link (https://ganshengt.github.io/intracranial_contact_loc/) for detailed documentation.
 

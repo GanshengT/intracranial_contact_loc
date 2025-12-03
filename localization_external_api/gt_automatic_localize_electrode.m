@@ -56,7 +56,9 @@ function [contact_tbl, shank_model_all] = gt_automatic_localize_electrode(imagin
 % Example
 %   [T, S] = gt_automatic_localize_electrodes(imStruct, 'BJH033');
 % bm_path is always required, if no bm_path is provided, a reference brain
-% mask will be used, which is not optimal!
+% mask will be used, which is not optimal! If running this algorithm in Windows, 
+% please unzip .mgz into .mgh, one way is "MRI_convert input.mgz output.mgh" (in ubuntu, for example)
+
 
 arguments
     imaging_processing_info_struct

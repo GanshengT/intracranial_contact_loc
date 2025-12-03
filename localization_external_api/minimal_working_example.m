@@ -35,6 +35,9 @@ im.electrode_info = im_struct.electrode_info;
 electrode_manufacture = 'DIXI';
 % 5 either from GT's sugmentation or from freesurfer (not freesurfer might
 % call it brainmask.mgz), I used automatic segmentation
+% if running in Windows, please unzip .mgz into .mgh and make bm_path = "***.mgh". The reason is 
+% freesurfer commands currently can not be run in windows command lines. one way is
+% "MRI_convert input.mgz output.mgh" (in ubuntu installed in Windows, for example).
 bm_path = 'BJH075_brainmask.auto.mgz';
 % you can set the folder path for storing the results here, for example,
 % curr_dir = pwd;
