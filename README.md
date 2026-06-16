@@ -198,7 +198,31 @@ Please note that CT scans in NIFTY format and electrode specification are requir
 
 Additionally, for windows users, zipped imaging files xxxxx.mgz are not supported by MRIread function from freesurfer (which is used in this external wrapper function). Therefore, please provide unzipped imaging files xxxxx.mgh as input. 
 
+## Reference-brain normalization plugin
+The repository also includes a local plugin for researchers who want to normalize localized contacts to MNI or another reference brain:
+
+```matlab
+addpath(genpath('automated_pipeline/mni_normalization_plugin'));
+reference_mri = fullfile('automated_pipeline', 'mni_normalization_plugin', ...
+    'example_data', 'reference', 'mni_icbm152_t1_tal_nlin_asym_09c.nii.gz');
+[contact_tbl, paths] = gt_normalize_contacts_to_reference_brain(subject_mri, contact_table_mat, reference_mri, output_dir);
+```
+
+The packaged reference NIfTI above is an MNI152 anatomical image copied from FreeSurfer (`/Applications/freesurfer/8.1.0/average/mni_icbm152_nlin_asym_09c/mni_icbm152_t1_tal_nlin_asym_09c.nii.gz`). It is only the example reference; users can provide another MNI template, atlas-space brain, or study-specific reference MRI. This plugin requires MATLAB, ANTs binaries, a subject anatomical MRI, a contact table, and a reference brain image. The current validated contact transform is affine-only; the code documents where to enable future nonlinear point transforms with `antsApplyTransformsToPoints`.
+
+The plugin includes a small packaged ANTs runtime folder at `automated_pipeline/mni_normalization_plugin/example_data/ants/bin` for the example. These binaries are copied from a local ANTs installation and may be platform-specific; users can replace `ants_bin_path` with any compatible ANTs `bin` directory.
+
+Briefly, the plugin registers the subject anatomical MRI to the selected reference brain with ANTs, saves the ANTs registration outputs, loads the ANTs affine transform, and applies that affine matrix to the localized electrode coordinates. The transformed contact table is written to the user-provided `output_dir`; for the packaged BJH025 example, outputs go to `automated_pipeline/mni_normalization_plugin/example_output/BJH025/`. Expected generated files include `reference_Warped.nii.gz`, `reference_0GenericAffine.mat`, `contacts_reference_affine_only.csv`, and `reference_contact_coordinate/*_reference_affine.dat`.
+
+Example validation from BJH025 is shown below. The first figure shows the native-space contacts on the native MRI glass brain before normalization. The second figure shows the affine-transformed contacts overlaid on the MNI reference glass brain after applying the ANTs affine transform.
+
+<p align="center">
+  <img src="figs/mni_normalization_native_contact_glass_brain.png" alt="BJH025 native-space contacts on native MRI glass brain" width="650">
+</p>
+
+<p align="center">
+  <img src="figs/mni_normalization_mni_contact_glass_brain.png" alt="BJH025 affine MNI contacts on MNI glass brain" width="650">
+</p>
+
 ## Tutorial
 Please use this link (https://ganshengt.github.io/intracranial_contact_loc/) for detailed documentation.
-
-
