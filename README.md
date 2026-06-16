@@ -1,5 +1,5 @@
 # intracranial_contact_loc
-[![DOI](https://zenodo.org/badge/891756132.svg)](https://doi.org/10.5281/zenodo.14217838)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14217838.svg)](https://doi.org/10.5281/zenodo.14217838)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://ganshengt.github.io/intracranial_contact_loc/)
 
 This repository includes algorithms in MATLAB for localizing intracranial contact. CT images, MRI images, and freesurfer software are required.
