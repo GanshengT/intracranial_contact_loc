@@ -5,6 +5,9 @@
 This repository includes algorithms in MATLAB for localizing intracranial contact. CT images, MRI images, and freesurfer software are required.
 
 Updates:
+2026 Jun 16, Added a external plugin for normalizing to reference brain, for example, in MNI space. Current code does not check avaiable system memory and the size of the input CT images. It could happen that analyzing and visualizing high-resolution CT images (e.g., 500 by 500 by 500 voxels) require more than 100 GB memory (options to detect and downsample imaging is working progress). 
+
+Updates:
 2025 Aug 19, I developed an automated pipeline for estimating intracranial electrode location based on CT images and manufacture information of the electrode lead. The main script has been tested on DIXI electrodes.
 
 ## Installation
